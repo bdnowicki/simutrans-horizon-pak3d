@@ -20,18 +20,21 @@ LICENSE, LICENSES.md     licence text, author and licence of every file
 
 | Model | Matched pak names | Triangles LOD 0 / LOD 1 | Textures | Materials |
 |---|---|---|---|---|
-| Empire State Building (`models/empire_state*.glb`, 2 × 2 squares, 6.46 squares high) | `MT_HOTEL_0` (stand-in, see below) | 6 594 / 138 | facade 1024² (colour, normal, roughness/metal, night lights), limestone 512², storefront 512 × 256, roof 256²; LOD 1 256² | `night_emissive` (facade), `esb_limestone`, `esb_roof`, `esb_storefront`, `esb_metal`, `esb_pavement`, `esb_planting` |
+| Empire State Building (`models/empire_state*.glb`, 1 × 2 squares, 6.46 squares high) | `ABBYS_0` at its place 409,452–409,453 of the New York City map (see below) | 6 384 / 138 | facade 1024² (colour, normal, roughness/metal, night lights), limestone 512², storefront 512 × 256, roof 256²; LOD 1 256² | `night_emissive` (facade), `esb_limestone`, `esb_roof`, `esb_storefront`, `esb_metal`, `esb_pavement`, `esb_planting` |
 | Metro driving car, TMB class 6000 kind (`models/tmb6000_cab*.glb`, 0.5 squares) | `TMB_Class_6000`, `TMB_Class_6000_Back` | 1 973 / 345 | none | `player1` (body), `player2` (stripe, lower front), `night_emissive` (passenger windows), `tmb_windscreen`, `tmb_black`, `tmb_lamp`, `tmb_roof`, `tmb_underframe` |
 | Metro intermediate car (`models/tmb6000_car*.glb`, 0.5 squares) | `TMB_Class_6000_Car`, `TMB_Class_6000_Powered_Car` (pattern `TMB_Class_6000_*Car`) | 1 722 / 242 | none | as the driving car without windscreen and lamps |
 
 * **Empire State Building.** pak128 has no Empire State Building and the New York City map has no object of its own
-  for it. The model is matched to `MT_HOTEL_0`, a 2 × 2 attraction of which the map (2029 save) has exactly one copy,
-  in Midtown at the south-east corner of Central Park (squares 408,401–409,402). Should a city build another
-  `MT_HOTEL_0`, it gets the same model; a pakset or scenario with a real Empire State Building object only needs the
-  `match` changed. Modelled in metres from the setbacks of the real building (lot 129 m along 34th Street, deepened
-  to fill the two squares; 5-storey podium, setbacks at the 6th, 21st, 25th, 30th, 72nd, 81st and 86th floors,
-  mooring mast with its buttresses and fins, 102nd floor drum, antenna tip at 443 m) and scaled to 1.88/129 squares
-  per metre. Limestone piers sit on the facade grid of the texture (3 m bays, 3.75 m floors).
+  for it, but it marks its place: the label "Empire State Bldg" on 5th Avenue between 33rd and 34th Street stands
+  on two attractions `ABBYS_0` at 409,452 and 409,453, which fill that block from north to south. The entry is
+  bound to that place (`"at": [409, 452]`, `"footprint": [1, 2]`, dashboard of Simutrans-Horizon from the version
+  that knows `at`): one model over both squares, turned with the map; `ABBYS_0` anywhere else stays generated. A
+  pakset or scenario with a real Empire State Building object only needs the `match` changed (and `at` dropped).
+  Modelled in metres from the setbacks of the real building (lot 129 × 60 m, its long side laid north to south
+  along the two squares, a quarter turn from the real one; 5-storey podium, setbacks at the 6th, 21st, 25th, 30th,
+  72nd, 81st and 86th floors, mooring mast with its buttresses and fins, 102nd floor drum, antenna tip at 443 m) and
+  scaled to 1.88/129 squares per metre; the 5th Avenue entrance faces east (+X), the 34th Street one north. Limestone
+  piers sit on the facade grid of the texture (3 m bays, 3.75 m floors).
 * **TMB cars.** The convoys on the map run `TMB_Class_6000` + 12 × `TMB_Class_6000_Car` + `TMB_Class_6000_Back`.
   The driving car model faces +X; the dashboard turns a powered last car round, so `TMB_Class_6000_Back` uses the
   same model. Proportions follow the dashboard's generated rail cars (rails at ±0.1 squares, floor 0.07, roof 0.27),
@@ -104,11 +107,11 @@ dashboard picks the new files up on the next load of the 3D view (the files carr
 ## Coverage
 
 `tools/pak3d/coverage.py` of the game lists which objects of a running game have a model. New York City map
-(`new_york_city_2029_lotniska.sve`, 1024 × 1024), version 0.1.0 of this pak:
+(`new_york_city_2029_lotniska.sve`, 1024 × 1024), version 0.2.0 of this pak:
 
 | Kind | Object types with a model | Copies on the map with a model |
 |---|---|---|
-| buildings (all types) | 1 of 894 (`MT_HOTEL_0`) | 1 of 37 464 |
+| buildings (all types) | 1 of 894 (`ABBYS_0`, both copies at the place of the Empire State Building) | 2 of 37 464 |
 | vehicles | 3 of 43 (the TMB class 6000 cars) | 84 of 2 860 (6 trains of 14 cars) |
 | trees, signs, ways, bridges, tunnels, overhead lines | 0 | 0 |
 

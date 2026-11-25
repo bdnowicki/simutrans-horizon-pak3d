@@ -1,6 +1,8 @@
-# Empire State Building (New York, 1931) for the pak 3D: 2 x 2 squares, front (33rd Street) towards -Y, 5th Avenue
-# towards +X. Modelled in metres from the setbacks of the real building (lot 129 m along 34th Street, deepened to
-# fill the two squares; roof of the 102nd floor at 381 m, antenna tip at 443 m) and scaled to squares.
+# Empire State Building (New York, 1931) for the pak 3D: 1 x 2 squares, its place on the New York City map (one
+# square east to west, two north to south between 33rd and 34th Street), front (33rd Street) towards -Y, 34th Street
+# towards +Y, 5th Avenue towards +X. Modelled in metres from the setbacks of the real building (lot 129 x 60 m,
+# its long side laid along the two squares, a quarter turn from the real one; roof of the 102nd floor at 381 m,
+# antenna tip at 443 m) and scaled to squares.
 #   blender -b --factory-startup -P scripts/empire_state.py -- --out models/empire_state.glb [--lod 1]
 # Author: bdnowicki. License: CC BY 4.0.
 import math
@@ -12,20 +14,21 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import pak3d_blender as pb  # noqa: E402
 
-LOT_X = 129.0                 # metres along 34th Street
-SCALE = 1.88 / LOT_X          # squares per metre: the lot spans 1.88 of the 2 squares
+LOT = 129.0                   # metres along 34th Street: the long side, along the two squares (y)
+SCALE = 1.88 / LOT            # squares per metre: the lot spans 1.88 of the 2 squares
+FOOT = (1, 2)                 # squares x, y
 BAY, FLOOR = 3.0, 3.75        # facade grid in metres
 TILE_BAYS, TILE_FLOORS = 16, 32
 
-# setbacks: (half x, half y, corner notch, bottom, top) in metres
-PODIUM = (64.5, 46.5, 0.0, 0.0, 25.0)
+# setbacks: (half x, half y, corner notch, bottom, top) in metres; x across the lot (60 m), y along it (129 m)
+PODIUM = (30.0, 64.5, 0.0, 0.0, 25.0)
 TIERS = [
-    (54.0, 33.0, 6.0, 25.0, 79.0),      # floors 6-21
-    (46.5, 28.5, 6.0, 79.0, 94.0),      # 21-25
-    (39.0, 25.5, 6.0, 94.0, 112.0),     # 25-30
-    (30.0, 21.0, 6.0, 112.0, 270.0),    # the shaft, 30-72
-    (24.0, 16.5, 4.5, 270.0, 304.0),    # 72-81
-    (18.0, 13.5, 3.0, 304.0, 319.0),    # 81-85
+    (26.0, 54.0, 6.0, 25.0, 79.0),      # floors 6-21
+    (24.5, 46.5, 6.0, 79.0, 94.0),      # 21-25
+    (23.0, 39.0, 6.0, 94.0, 112.0),     # 25-30
+    (21.0, 30.0, 6.0, 112.0, 270.0),    # the shaft, 30-72
+    (16.5, 24.0, 4.5, 270.0, 304.0),    # 72-81
+    (13.5, 18.0, 3.0, 304.0, 319.0),    # 81-85
 ]
 
 
@@ -227,17 +230,17 @@ def rooftop_boxes(m, rng, hx, hy, z, mat, count, avoid):
 def build_lod0(mt, rng):
     m = pb.Mesh("EmpireState", SCALE)
     F, S, R = mt["facade"], mt["stone"], mt["roof"]
-    # pavement and planters on the rest of the two squares (no face at the ground itself)
-    half = 0.975 / SCALE
-    m.box(-half, half, -half, half, 0.0, 0.35, mt["pave"], skip=("-z",))
+    # pavement and planters on the rest of the squares (no face at the ground itself)
+    px, py = (FOOT[0] / 2 - 0.0125) / SCALE, (FOOT[1] / 2 - 0.025) / SCALE
+    m.box(-px, px, -py, py, 0.0, 0.35, mt["pave"], skip=("-z",))
     hx, hy = PODIUM[0], PODIUM[1]
     for sx in (-1, 1):
+        x = sx * (hx + 1.75)
         for k in range(4):
-            x = sx * (12 + k * 13)
             for sy in (-1, 1):
-                y = sy * (hy + 8.5)
-                m.box(x - 2.5, x + 2.5, y - 1.2, y + 1.2, 0.35, 1.1, S, skip=("-z",))
-                m.box(x - 2.2, x + 2.2, y - 0.9, y + 0.9, 1.1, 1.5, mt["green"], skip=("-z",))
+                y = sy * (12 + k * 13)
+                m.box(x - 1.2, x + 1.2, y - 2.5, y + 2.5, 0.35, 1.1, S, skip=("-z",))
+                m.box(x - 0.9, x + 0.9, y - 2.2, y + 2.2, 1.1, 1.5, mt["green"], skip=("-z",))
     # podium: ground floor shops, offices above, cornice
     rect = pb.rect_notched(hx, hy, 0)
     m.prism(rect, 0.35, 7.5, mt["shop"])
@@ -265,16 +268,16 @@ def build_lod0(mt, rng):
             rooftop_boxes(m, rng, thx - notch, thy - notch, z1, R, 3 if k < 3 else 1, (nx + 1, ny + 1))
     # 86th floor: observatory core, the terrace parapet is the last tier's
     z = TIERS[-1][4]
-    core = pb.rect_notched(13.5, 10.5, 1.5)
+    core = pb.rect_notched(10.5, 13.5, 1.5)
     m.prism(core, z, z + 7.5, F, top=R)
     piers(m, core, z, z + 7.5, S, width=1.0, depth=0.35, corner=1.4)
     z += 7.5
     # mooring mast: base with four stepped buttresses, chamfered shaft with metal fins, 102nd floor drum, antenna
-    m.prism(pb.rect_notched(10.5, 8.25, 2.0), z, z + 6.0, S, top=S)
+    m.prism(pb.rect_notched(8.25, 10.5, 2.0), z, z + 6.0, S, top=S)
     for ang in range(4):
         for step, (w, d, h) in enumerate([(5.0, 6.0, 3.0), (4.0, 4.0, 6.5), (3.0, 2.2, 10.0)]):
             ca, sa = round(math.cos(ang * math.pi / 2)), round(math.sin(ang * math.pi / 2))
-            ex = (10.5 if ca else 8.25)
+            ex = (8.25 if ca else 10.5)
             cx, cy = ca * (ex + d / 2 - 0.5), sa * (ex + d / 2 - 0.5)
             hw = w / 2
             if ca:
@@ -325,9 +328,9 @@ def build_lod1(mt):
     for thx, thy, notch, z0, z1 in TIERS:
         m.box(-thx, thx, -thy, thy, z0, z1, F, skip=("-z",), mats={"+z": R})
     z = TIERS[-1][4]
-    m.box(-13.5, 13.5, -10.5, 10.5, z, z + 7.5, F, skip=("-z",), mats={"+z": R})
+    m.box(-10.5, 10.5, -13.5, 13.5, z, z + 7.5, F, skip=("-z",), mats={"+z": R})
     z += 7.5
-    m.box(-10.5, 10.5, -8.25, 8.25, z, z + 6.0, S, skip=("-z",))
+    m.box(-8.25, 8.25, -10.5, 10.5, z, z + 6.0, S, skip=("-z",))
     z += 6.0
     m.box(-7.5, 7.5, -7.5, 7.5, z, z + 28.6, F, skip=("-z",), mats={"+z": S})
     z += 28.6

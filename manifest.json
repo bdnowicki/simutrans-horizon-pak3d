@@ -1,14 +1,14 @@
 {
   "format": 1,
   "name": "Simutrans-Horizon pak 3D",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "CC BY 4.0",
   "author": "bdnowicki",
   "units": {"tile": 1.0, "height_step": 0.2041},
   "entries": [
-    {"match": "building:MT_HOTEL_0", "model": "models/empire_state.glb", "lod": ["models/empire_state_lod1.glb"],
-     "featured": true, "footprint": [2, 2],
-     "comment": "Empire State Building. pak128 has no such object; on the New York City map the hotel MT_HOTEL_0 (2 x 2, one copy, Midtown at the corner of Central Park) stands in for it."},
+    {"match": "building:ABBYS_0", "at": [409, 452], "model": "models/empire_state.glb",
+     "lod": ["models/empire_state_lod1.glb"], "featured": true, "footprint": [1, 2],
+     "comment": "Empire State Building at its place on the New York City map. pak128 has no such object; the map marks the place (label Empire State Bldg, 5th Avenue between 33rd and 34th Street) with two attractions ABBYS_0 at 409,452 and 409,453, which the model covers."},
     {"match": "vehicle:TMB_Class_6000", "model": "models/tmb6000_cab.glb", "lod": ["models/tmb6000_cab_lod1.glb"],
      "featured": true, "length": 0.5, "comment": "driving car at the front"},
     {"match": "vehicle:TMB_Class_6000_Back", "model": "models/tmb6000_cab.glb", "lod": ["models/tmb6000_cab_lod1.glb"],
