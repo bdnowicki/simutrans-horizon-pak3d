@@ -1,0 +1,8 @@
+# Python and Blender leftovers
+__pycache__/
+*.pyc
+*.blend1
+*.blend@
+# preview renders and logs (scripts/preview.py, build logs)
+previews/
+*.log

@@ -1,0 +1,15 @@
+# models and textures are binary; scripts run in Linux containers
+*.glb binary
+*.bin binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ktx2 binary
+*.blend binary
+*.sh text eol=lf
+*.py text eol=lf
+Dockerfile text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+LICENSE text eol=lf

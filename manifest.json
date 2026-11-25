@@ -1,0 +1,19 @@
+{
+  "format": 1,
+  "name": "Simutrans-Horizon pak 3D",
+  "version": "0.1.0",
+  "license": "CC BY 4.0",
+  "author": "bdnowicki",
+  "units": {"tile": 1.0, "height_step": 0.2041},
+  "entries": [
+    {"match": "building:MT_HOTEL_0", "model": "models/empire_state.glb", "lod": ["models/empire_state_lod1.glb"],
+     "featured": true, "footprint": [2, 2],
+     "comment": "Empire State Building. pak128 has no such object; on the New York City map the hotel MT_HOTEL_0 (2 x 2, one copy, Midtown at the corner of Central Park) stands in for it."},
+    {"match": "vehicle:TMB_Class_6000", "model": "models/tmb6000_cab.glb", "lod": ["models/tmb6000_cab_lod1.glb"],
+     "featured": true, "length": 0.5, "comment": "driving car at the front"},
+    {"match": "vehicle:TMB_Class_6000_Back", "model": "models/tmb6000_cab.glb", "lod": ["models/tmb6000_cab_lod1.glb"],
+     "featured": true, "length": 0.5, "comment": "driving car at the end: powered, so the dashboard turns it round"},
+    {"match": "vehicle:TMB_Class_6000_*Car", "model": "models/tmb6000_car.glb", "lod": ["models/tmb6000_car_lod1.glb"],
+     "featured": true, "length": 0.5, "comment": "TMB_Class_6000_Car and TMB_Class_6000_Powered_Car"}
+  ]
+}
