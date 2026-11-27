@@ -19,6 +19,8 @@ fi
 MODELS="
 empire_state.glb          empire_state.py
 empire_state_lod1.glb     empire_state.py --lod 1
+statue_of_liberty.glb     statue_of_liberty.py
+statue_of_liberty_lod1.glb statue_of_liberty.py --lod 1
 tmb6000_cab.glb           tmb6000.py --part cab
 tmb6000_cab_lod1.glb      tmb6000.py --part cab --lod 1
 tmb6000_car.glb           tmb6000.py --part car

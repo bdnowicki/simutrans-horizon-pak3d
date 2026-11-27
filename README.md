@@ -21,6 +21,7 @@ LICENSE, LICENSES.md     licence text, author and licence of every file
 | Model | Matched pak names | Triangles LOD 0 / LOD 1 | Textures | Materials |
 |---|---|---|---|---|
 | Empire State Building (`models/empire_state*.glb`, 1 × 2 squares, 6.46 squares high) | `ABBYS_0` at its place 409,452–409,453 of the New York City map (see below) | 6 384 / 138 | facade 1024² (colour, normal, roughness/metal, night lights), limestone 512², storefront 512 × 256, roof 256²; LOD 1 256² | `night_emissive` (facade), `esb_limestone`, `esb_roof`, `esb_storefront`, `esb_metal`, `esb_pavement`, `esb_planting` |
+| Statue of Liberty with its pedestal and Fort Wood (`models/statue_of_liberty*.glb`, 1 × 2 squares, 1.39 squares high) | `WOODEN_CHURCH` at its place 378,657–378,658 of the New York City map (see below) | 9 562 / 1 834 | copper patina, granite, foundation concrete, fort stone 512² each (colour and normal), lawn 256²; LOD 1 none | `night_emissive` (flame), `liberty_copper`, `liberty_granite`, `liberty_concrete`, `liberty_fort`, `liberty_lawn`, `liberty_paving`, `liberty_shadow`, `liberty_tree`, `liberty_trunk` |
 | Metro driving car, TMB class 6000 kind (`models/tmb6000_cab*.glb`, 0.5 squares) | `TMB_Class_6000`, `TMB_Class_6000_Back` | 1 973 / 345 | none | `player1` (body), `player2` (stripe, lower front), `night_emissive` (passenger windows), `tmb_windscreen`, `tmb_black`, `tmb_lamp`, `tmb_roof`, `tmb_underframe` |
 | Metro intermediate car (`models/tmb6000_car*.glb`, 0.5 squares) | `TMB_Class_6000_Car`, `TMB_Class_6000_Powered_Car` (pattern `TMB_Class_6000_*Car`) | 1 722 / 242 | none | as the driving car without windscreen and lamps |
 
@@ -35,6 +36,21 @@ LICENSE, LICENSES.md     licence text, author and licence of every file
   72nd, 81st and 86th floors, mooring mast with its buttresses and fins, 102nd floor drum, antenna tip at 443 m) and
   scaled to 1.88/129 squares per metre; the 5th Avenue entrance faces east (+X), the 34th Street one north. Limestone
   piers sit on the facade grid of the texture (3 m bays, 3.75 m floors).
+* **Statue of Liberty.** pak128 has no Statue of Liberty and the New York City map has no object of its own for
+  it; Liberty Island (label "Liberty Island" at 378,657) holds two attractions `WOODEN_CHURCH` at 378,657 and
+  378,658. The entry is bound to that place (`"at": [378, 657]`, `"footprint": [1, 2]`): one model over both
+  squares; the third `WOODEN_CHURCH` of the map (427,589, Downtown) stays a generated church. Modelled in metres
+  from the published dimensions (93 m from the ground to the tip of the flame: concrete foundation, Hunt's granite
+  pedestal with its projecting bays, loggia band with columns, frieze of discs and balcony, the robed figure with
+  the raised torch, the crown of seven rays and the tablet) at the scale of the Empire State Building, stylised so
+  it reads at the dashboard's usual zoom: the figure 14 % larger and the foundation lower (1.39 squares in all),
+  the eleven-pointed star of Fort Wood (grass on its bastions) about two thirds of its size so it fits the one
+  square of width, a lawn with paths, two small squares and trees on the rest of the two squares. She faces 107°
+  clockwise from the map's north, towards +x and a little +y: the real statue faces south-east, and this map is
+  turned by about 28° (its north is true north-north-east, along the Manhattan grid; worked out from the labels of
+  Governors Island, the Verrazano-Narrows Bridge and Bayonne Bridge), so she looks out over the Upper Bay with the
+  Narrows to her right, as on the real harbour, and the dashboard's default iso camera sees her from the
+  three-quarter front. The flame is `night_emissive` and glows at night.
 * **TMB cars.** The convoys on the map run `TMB_Class_6000` + 12 × `TMB_Class_6000_Car` + `TMB_Class_6000_Back`.
   The driving car model faces +X; the dashboard turns a powered last car round, so `TMB_Class_6000_Back` uses the
   same model. Proportions follow the dashboard's generated rail cars (rails at ±0.1 squares, floor 0.07, roof 0.27),
@@ -107,11 +123,11 @@ dashboard picks the new files up on the next load of the 3D view (the files carr
 ## Coverage
 
 `tools/pak3d/coverage.py` of the game lists which objects of a running game have a model. New York City map
-(`new_york_city_2029_lotniska.sve`, 1024 × 1024), version 0.2.0 of this pak:
+(`new_york_city_2029_lotniska.sve`, 1024 × 1024), version 0.3.0 of this pak:
 
 | Kind | Object types with a model | Copies on the map with a model |
 |---|---|---|
-| buildings (all types) | 1 of 894 (`ABBYS_0`, both copies at the place of the Empire State Building) | 2 of 37 464 |
+| buildings (all types) | 1 of 894 (`ABBYS_0`, both copies at the place of the Empire State Building); `WOODEN_CHURCH` 2 of its 3 copies (the Statue of Liberty) | 4 of 37 464 |
 | vehicles | 3 of 43 (the TMB class 6000 cars) | 84 of 2 860 (6 trains of 14 cars) |
 | trees, signs, ways, bridges, tunnels, overhead lines | 0 | 0 |
 
